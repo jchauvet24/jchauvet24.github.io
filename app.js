@@ -29,7 +29,7 @@ function startpractise(){
 }
 
 function loadWords(shuffle){
-    let words = localStorage.getItem("quizwords").split(',') || []
+    let words = localStorage.getItem("quizwords")?.split(',') || []
     document.querySelector("#wordsetup .words").value = words.join('\n')
     WORDS = shuffle ? shuffleArray(words) : words
     updateWordCount()
