@@ -61,7 +61,7 @@ function savewords(){
 
 let errorindex = 0
 let errorhints = [
-    [".*", "Not quite! Try again"],
+    [".*", "Not quite! Try againdddd"],
     [/[aeiou]/gi, "_"],
     [/[aeou]/gi, "_"],
     [/[aeu]/gi, "_"],
