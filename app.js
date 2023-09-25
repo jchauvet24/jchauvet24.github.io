@@ -8,6 +8,14 @@ loadWords()
 switchContent("home")
 
 
+function setHomeButtons(style){
+    document.querySelectorAll('#home button').forEach((b, i) => {
+        if (i != 0){
+            b.style.display = style
+        }
+    })
+}
+
 function startquiz(){
     practiseMode = false; 
     switchContent("quiz")
@@ -29,10 +37,15 @@ function startpractise(){
 }
 
 function loadWords(shuffle){
-    let words = localStorage.getItem("quizwords")?.split(',') || []
+    let words = localStorage.getItem("quizwords")?.split(',')?.filter(w => w != "") || []
     document.querySelector("#wordsetup .words").value = words.join('\n')
     WORDS = shuffle ? shuffleArray(words) : words
     updateWordCount()
+    if (WORDS.length == 0){
+        setHomeButtons('none')
+    } else {
+        setHomeButtons('')
+    }
 }
 
 /* Randomize array in-place using Durstenfeld shuffle algorithm */
