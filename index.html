@@ -1,0 +1,55 @@
+<html>
+    <header>
+        <link rel="stylesheet" href="base.css"/>
+    </header>
+    
+    
+
+    <body onclick="answerFocus()">
+
+        <h1>Spelling App</h1>
+        <p>Total Words: <span class="wordcount"></span></p>
+
+        <div class="zoom">
+            <div class="content" id="home">
+                <button onclick="switchContent('wordsetup')">Setup Words</button>
+                <button onclick="startquiz()">Start Quiz</button>
+            </div>
+            <div class="content" id="wordsetup">
+                <h3>Add words to practise</h3>
+        
+                <textarea class="words" spellcheck="true" rows="10" style="resize: none;"></textarea>
+                <div class="button-list">
+                    <button id="savewords" onclick="savewords()">Save</button>
+                </div>
+                
+            </div>
+    
+            <div class="content" id="quiz" >
+                <h3>Question <span id="qno"></span></h3>
+    
+                <button id="speak-button" onclick="repeatWord()">Repeat Word</button>
+        
+                <input id="answer" spellcheck="false" type="text"/>
+                <button id="submit" onclick="submitAnswer()">Submit</button>
+
+                <a href="#" class="exit" onclick="exit()">Exit quiz</a>
+            </div>
+    
+            <div class="content" id="quizresult">
+                <h3>You've scored <span id="correctno"></span> out of <span class="wordcount"></span></h3>
+                <div id="answers"></div>
+
+                <div class="button-list">
+                    <button onclick="switchContent('home')">Home</button>
+                    <button onclick="retake()">Retake</button>
+                </div>
+            
+            </div>
+            
+        </div>
+        
+    </body>
+    <script src="app.js"></script>
+
+</html>
