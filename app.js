@@ -2,23 +2,48 @@
 let answers = []
 let WORDS = []
 let currentIndex = 0
+let practiseMode = true; 
 
 loadWords()
 switchContent("home")
 
 
 function startquiz(){
+    practiseMode = false; 
+    switchContent("quiz")
+    quiz(true)
+}
+
+function quiz(shuffle){
     switchContent("quiz")
     currentIndex = 0
     answers = []
-    incQuestionNum()   
+    loadWords(shuffle)
+    incQuestionNum()
+    repeatWord()   
 }
 
-function loadWords(){
+function startpractise(){
+    practiseMode = true; 
+    quiz(false)
+}
+
+function loadWords(shuffle){
     let words = localStorage.getItem("quizwords").split(',') || []
     document.querySelector("#wordsetup .words").value = words.join('\n')
-    WORDS = words
+    WORDS = shuffle ? shuffleArray(words) : words
     updateWordCount()
+}
+
+/* Randomize array in-place using Durstenfeld shuffle algorithm */
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array
 }
 
 function updateWordCount(){
@@ -34,6 +59,18 @@ function savewords(){
     switchContent('home')
 }
 
+let errorindex = 0
+let errorhints = [
+    [".*", "Not quite! Try again"],
+    [".*", "Hmm getting close! "],
+    [".*", "Ok one more try then I'll give you a clue"],
+    [/[aeiou]/gi, "_"],
+    [/[aeou]/gi, "_"],
+    [/[aeu]/gi, "_"],
+    [/[ae]/gi, "_"],
+    [/[e]/gi, "_"],
+    [/[]/gi, "_"],
+]
 
 function submitAnswer() {
     const answerInput = document.querySelector('#answer')
@@ -41,14 +78,27 @@ function submitAnswer() {
         return;
     }
     answers[currentIndex] = answerInput.value
+    
+    if (practiseMode && answerIsWrong(answerInput.value)){
+        const hints = errorhints[errorindex++]
+        let hint = WORDS[currentIndex].replace(new RegExp(hints[0]), hints[1])
+        alert("Hint: " + hint)
+        repeatWord()
+        return;
+    }
+    errorindex=0
     answerInput.value = ""
-    currentIndex++;
-
-    if (WORDS.length > currentIndex){
+    currentIndex++
+    if (currentIndex < WORDS.length){
         incQuestionNum()
+        repeatWord()
     } else {
         complete()
     }
+}
+
+function answerIsWrong(ans){
+    return WORDS[currentIndex] != ans.trim().toLowerCase()
 }
 
 function complete(){
@@ -92,9 +142,7 @@ function retake(){
 }
 
 function incQuestionNum(){
-    document.querySelector('#qno').innerHTML = currentIndex+1
-    repeatWord()
-    answerFocus()
+    document.querySelector('#qno').innerHTML =currentIndex + 1
 }
 
 function repeatWord(){
