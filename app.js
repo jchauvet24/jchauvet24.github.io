@@ -178,7 +178,7 @@ function readWord(){
   utterance.text = text;
   utterance.rate = 0.7;
   utterance.lang = "en-GB"
-  utterance.voice = window.speechSynthesis.getVoices()[0];
+  utterance.voice = window.speechSynthesis.getVoices()?.filter(s => s.lang == "en-GB")[0];
   window.speechSynthesis.speak(utterance);
 }
 
