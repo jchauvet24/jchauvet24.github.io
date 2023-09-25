@@ -177,7 +177,7 @@ function readWord(){
   let utterance = new SpeechSynthesisUtterance();
   utterance.text = text;
   utterance.rate = 0.7;
-
+  utterance.lang = "en-GR"
   utterance.voice = window.speechSynthesis.getVoices()[0];
   window.speechSynthesis.speak(utterance);
 }
